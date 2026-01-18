@@ -17,9 +17,9 @@
     }
   ],
   "FuelQuality": 20,
-  "PlayerAnimationsId": "Block",
+  "PlayerAnimationsId": "Item",
   "IconProperties": {
-    "Scale": 0.57323,
+    "Scale": 0.8,
     "Rotation": [
       22.5,
       45,
@@ -27,7 +27,7 @@
     ],
     "Translation": [
       -3.6,
-      -16.2
+      -2
     ]
   },
   "Tags": {
@@ -41,5 +41,33 @@
   "MaxStack": 100,
   "ItemSoundSetId": "ISS_Blocks_Stone",
   "DropOnDeath": true,
-  "BlockType": ""
+  "BlockType": {
+    "Material": "Solid",
+    "DrawType": "Model",
+    "Opacity": "Transparent",
+    "CustomModel": "Blocks/Stone/Rubble_Charcoal.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "Items/Rubble/Rubble_Textures/Charcoal.png",
+        "Weight": 1
+      }
+    ],
+    "Group": "Stone",
+    "HitboxType": "Rubble",
+    "Flags": {},
+    "RandomRotation": "YawStep1",
+    "Gathering": {
+      "Soft": {},
+      "Harvest": {}
+    },
+    "BlockParticleSetId": "Dust",
+    "BlockSoundSetId": "Stone",
+    "Support": {
+      "Down": [
+        {
+          "FaceType": "Full"
+        }
+      ]
+    }
+  }
 }

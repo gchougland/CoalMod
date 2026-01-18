@@ -107,8 +107,6 @@ public class ModOresWorldGenProvider extends HytaleWorldGenProvider {
             throw new WorldGenLoadException("Failed to prepare worldgen overlay: " + ex.getMessage(), ex);
         }
 
-        HytaleLogger.forEnclosingClass().atInfo().log("WorldGen workDir retained for inspection: %s", workDir);
-
         try {
             return new ChunkGeneratorJsonLoader(
                     new SeedString<>("ChunkGenerator", new SeedStringResource(PrefabStoreRoot.DEFAULT, workDir)),

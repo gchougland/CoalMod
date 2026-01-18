@@ -60,8 +60,6 @@ public final class WorldGenOverlayHelper {
 
         String prefixToStrip = "Server/World/" + generatorName + "/";
 
-        LOG.atInfo().log("WorldGen overlay: basePath=%s workDir=%s overlayPaths=%d", basePath, workDir, overlayPaths.size());
-
         // 1) Copy base into workDir
         copyRecursive(basePath, workDir);
 
@@ -83,39 +81,17 @@ public final class WorldGenOverlayHelper {
         }
 
         // 2) Overlay each resource
-        int merged = 0, copied = 0, skipped = 0;
         for (String path : overlayPaths) {
-            if (!path.startsWith(prefixToStrip)) { skipped++; continue; }
+            if (!path.startsWith(prefixToStrip)) continue;
 
             String rel = path.substring(prefixToStrip.length());
             Path dest = workDir.resolve(rel);
 
             if (rel.endsWith(ENTRY_NODE_FILE) && !mergeEntryPrefixes.isEmpty()) {
-                if (mergeEntryNode(dest, path, resourceClassLoader, mergeEntryPrefixes)) merged++;
+                mergeEntryNode(dest, path, resourceClassLoader, mergeEntryPrefixes);
             } else {
-                if (copyResource(path, dest, resourceClassLoader)) copied++;
+                copyResource(path, dest, resourceClassLoader);
             }
-        }
-        LOG.atInfo().log("WorldGen overlay: merged=%d copied=%d skipped=%d", merged, copied, skipped);
-
-        // 3) Optional: verify a sample zone
-        Path zonesDir = workDir.resolve("Zones");
-        Path sampleEntry = zonesDir.resolve("Zone1_Tier3").resolve("Cave").resolve("Ores").resolve("Entry.node.json");
-        Path sampleCoal = zonesDir.resolve("Zone1_Tier3").resolve("Cave").resolve("Ores").resolve("Coal").resolve("CoalSpread.node.json");
-        Path sampleVein = zonesDir.resolve("Zone1_Tier3").resolve("Cave").resolve("Ores").resolve("Coal").resolve("CoalVeinSmall.node.json");
-        if (Files.exists(sampleEntry)) {
-            String entryContents = Files.readString(sampleEntry, StandardCharsets.UTF_8);
-            boolean hasCoal = entryContents.contains("Ores.Coal.CoalSpread");
-            boolean coalFileExists = Files.exists(sampleCoal);
-            boolean coalVeinExists = Files.exists(sampleVein);
-            boolean fillingOk = coalVeinExists && Files.readString(sampleVein, StandardCharsets.UTF_8).contains("Ore_Coal_Stone");
-            if (hasCoal && coalFileExists && fillingOk) {
-                LOG.atInfo().log("WorldGen overlay verify: Zone1_Tier3 Entry has Ores.Coal.CoalSpread, CoalSpread+CoalVeinSmall present, Filling Ore_Coal_Stone ok");
-            } else {
-                LOG.atWarning().log("WorldGen overlay verify: Zone1_Tier3 hasCoal=%s CoalSpread=%s CoalVeinSmall=%s fillingOk=%s (inspect workDir=%s)", hasCoal, coalFileExists, coalVeinExists, fillingOk, workDir);
-            }
-        } else {
-            LOG.atWarning().log("WorldGen overlay verify: Zones/Zone1_Tier3/.../Entry.node.json missing (base copy may lack Zones). workDir=%s zonesExists=%s", workDir, Files.isDirectory(zonesDir));
         }
 
         return workDir;
@@ -213,7 +189,6 @@ public final class WorldGenOverlayHelper {
 
         Files.createDirectories(dest.getParent());
         Files.writeString(dest, new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(base), StandardCharsets.UTF_8);
-        if (added > 0) LOG.atInfo().log("Merge Entry %s: added %d coal children", dest.getFileName(), added);
         return added > 0;
     }
 

@@ -13,13 +13,10 @@ public class CoalMod extends JavaPlugin {
 
     public CoalMod(JavaPluginInit init) {
         super(init);
-        LOGGER.atInfo().log("Hello from %s version %s", this.getName(), this.getManifest().getVersion().toString());
     }
 
     @Override
     protected void setup() {
-        this.getCommandRegistry().registerCommand(new ExampleCommand(this.getName(), this.getManifest().getVersion().toString()));
-
         // Replace the built-in "Hytale" worldgen provider with our overlay provider so
         // mod ore resources (e.g. coal) are merged into the base worldgen. Load-after
         // WorldGenPlugin is best; if we run first, the built-in may overwrite us.

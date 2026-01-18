@@ -1,7 +1,7 @@
 {
-  "Group": "CoalMod",
+  "Group": "Hexvane",
   "Name": "CoalMod",
-  "Version": "0.1.0",
+  "Version": "1.0.0",
   "Description": "A mod that adds coal ore to the game that can be used as fuel.",
   "Authors": [
     {
