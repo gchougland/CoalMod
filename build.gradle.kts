@@ -21,10 +21,6 @@ repositories {
 dependencies {
     compileOnly(libs.jetbrains.annotations)
     compileOnly(libs.jspecify)
-    
-    // ASM for bytecode transformation in early plugin
-    implementation("org.ow2.asm:asm:9.6")
-    implementation("org.ow2.asm:asm-commons:9.6")
 
     if (hytaleAssets.exists()) {
         compileOnly(files(hytaleAssets))
@@ -78,25 +74,6 @@ tasks.withType<Jar> {
                 .map { "${version}-${it}" }
                 .getOrElse(version.toString())
     }
-    
-    // Include ASM dependencies in the JAR for early plugin support
-    // Early plugins need their dependencies bundled since they load in a separate classloader
-    from({
-        configurations.runtimeClasspath.get().filter { 
-            it.name.startsWith("asm") 
-        }.map { 
-            if (it.isDirectory) it else zipTree(it) 
-        }
-    }) {
-        // Exclude ASM's META-INF files to avoid conflicts with our service files
-        exclude("META-INF/MANIFEST.MF")
-        exclude("META-INF/*.SF")
-        exclude("META-INF/*.DSA")
-        exclude("META-INF/*.RSA")
-    }
-    
-    // Avoid duplicate files
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 publishing {
