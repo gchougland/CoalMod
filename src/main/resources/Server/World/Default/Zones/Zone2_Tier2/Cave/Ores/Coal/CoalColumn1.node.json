@@ -1,0 +1,14 @@
+{
+  "Name": "Entry",
+  "Children": [
+    {
+      "Weights": [60, 40],
+      "Chance": 1,
+      "Node": ["Ores.Coal.CoalVeinSmall1", "Ores.Coal.CoalVeinLarge1"],
+      "PitchSet": [-75, -105],
+      "YawAdd": [0, 360]
+    }
+  ],
+  "Type": "EMPTY_LINE",
+  "Length": [255, 10]
+}

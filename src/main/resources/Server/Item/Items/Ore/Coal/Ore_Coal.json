@@ -1,0 +1,45 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.Ore_Coal.name",
+    "Description": "server.items.Ore_Coal.description"
+  },
+  "Categories": [
+    "Blocks.Ores"
+  ],
+  "Icon": "Icons/ItemsGenerated/Ore_Coal.png",
+  "Model": "Resources/Ores/Ore_Large.blockymodel",
+  "Texture": "Resources/Ores/Ore_Textures/Coal.png",
+  "Quality": "Common",
+  "ItemLevel": 10,
+  "ResourceTypes": [
+    {
+      "Id": "Fuel"
+    }
+  ],
+  "FuelQuality": 20,
+  "PlayerAnimationsId": "Block",
+  "IconProperties": {
+    "Scale": 0.57323,
+    "Rotation": [
+      22.5,
+      45,
+      22.5
+    ],
+    "Translation": [
+      -3.6,
+      -16.2
+    ]
+  },
+  "Tags": {
+    "Type": [
+      "Ore"
+    ]
+  },
+  "ItemEntity": {
+    "ParticleSystemId": null
+  },
+  "MaxStack": 100,
+  "ItemSoundSetId": "ISS_Blocks_Stone",
+  "DropOnDeath": true,
+  "BlockType": ""
+}
