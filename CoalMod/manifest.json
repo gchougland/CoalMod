@@ -10,7 +10,10 @@
   ],
   "Website": "https://www.curseforge.com/hytale/mods/coal-ore",
   "ServerVersion": "*",
-  "Dependencies": {},
+  "Dependencies": {
+    "Hexvane:WorldGenOverlayLib": "*",
+    "Hytale:WorldGen": "*"
+  },
   "OptionalDependencies": {},
   "DisabledByDefault": false,
   "IncludesAssetPack": true
