@@ -1,0 +1,29 @@
+{
+  "Name": "Coal",
+  "BlockMask": {
+    "Default": [
+      "Rock_Stone",
+      "Rock_Basalt",
+      "Rock_Marble",
+      "Rock_Sandstone",
+      "Rock_Volcanic",
+      { "Replace": false, "Fluid": "Water_Source" }
+    ]
+  },
+  "Entry": {
+    "File": "Ores.Zone1.Coal"
+  },
+  "EntryPoints": {
+    "$Comment": "Horizontal Density",
+    "Density": [0, 1],
+    "Seed": "Caves-Ore-Coal",
+    "Scale": 0.4,
+    "Jitter": 0.5
+  },
+  "FixedEntryHeight": 0,
+  "HeightRadiusFactor": {
+    "Positions": [0, 255],
+    "Values": [1, 1]
+  },
+  "Pitch": 0
+}

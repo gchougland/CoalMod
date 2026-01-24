@@ -1,32 +1,158 @@
-# Coal Mod
+# CoalMod
 
-A Hytale mod that adds coal ore to the game that can be used as fuel.
+A data-driven mod for Hytale that adds coal ore to world generation using only JSON files - no Java code required!
 
-## Features
+## Overview
 
-- Adds coal ore blocks to the game (Stone, Basalt, Sandstone, Shale, Volcanic variants)
-- Coal ore can be used as fuel for furnaces and other fuel-consuming blocks
-- Coal ore generates in the world across all zones (0-19 zones) via a custom worldgen provider
-- Coal ore spawns at all height levels (Y 0-255) with distribution similar to iron ore
+CoalMod demonstrates the **data-driven approach** to adding ores using WorldGenOverlayLib. This mod contains:
+- **Zero Java code** - completely JSON-based
+- Overlay configuration file
+- Ore node definitions
+- Entry.node.json files for ore distribution
+
+## How It Works
+
+CoalMod uses WorldGenOverlayLib's auto-discovery feature:
+
+1. The overlay configuration is defined in `Server/WorldGenOverlays/overlays.json`
+2. WorldGenOverlayLib's `AutoOverlayPlugin` automatically discovers and registers the overlay
+3. All coal ore node files are placed in the standard worldgen structure
+4. Entry.node.json files are automatically merged with base worldgen
+
+## File Structure
+
+```
+src/main/resources/
+└── Server/
+    ├── WorldGenOverlays/
+    │   └── overlays.json          (overlay configuration - defines zones and node files)
+    └── World/
+        └── Default/
+            └── Zones/
+                └── [Zone]/
+                    └── Cave/
+                        └── Ores/
+                            ├── Entry.node.json          (ore distribution - merged automatically)
+                            └── Coal/
+                                ├── CoalSpread.node.json
+                                ├── CoalSpread1.node.json
+                                ├── CoalColumn.node.json
+                                ├── CoalVeinSmall.node.json
+                                └── CoalVeinLarge.node.json
+                                ... (and variants 1-5 for each type)
+```
+
+## Configuration
+
+The overlay is configured in `Server/WorldGenOverlays/overlays.json`:
+
+```json
+{
+  "Overlays": [
+    {
+      "Name": "Coal Ore Overlay",
+      "Generator": "Default",
+      "MergePrefix": "Ores.Coal.",
+      "OreName": "Coal",
+      "Zones": [
+        "Oceans",
+        "Zone1_Shallow_Ocean",
+        "Zone1_Spawn",
+        "Zone1_Temple",
+        "Zone1_Tier1",
+        "Zone1_Tier2",
+        "Zone1_Tier3",
+        "Zone2_Shallow_Ocean",
+        "Zone2_Tier1",
+        "Zone2_Tier2",
+        "Zone2_Tier3",
+        "Zone3_Shallow_Ocean_Tier1",
+        "Zone3_Shallow_Ocean_Tier2",
+        "Zone3_Shallow_Ocean_Tier3",
+        "Zone3_Tier1",
+        "Zone3_Tier2",
+        "Zone3_Tier3",
+        "Zone4_Tier4",
+        "Zone4_Tier5"
+      ],
+      "NodeFiles": [
+        "Coal/CoalSpread.node.json",
+        "Coal/CoalSpread1.node.json",
+        ... (all coal node files)
+      ]
+    }
+  ]
+}
+```
+
+## Dependencies
+
+- **WorldGenOverlayLib**: Required for overlay discovery and merging
+- **Hytale:WorldGen**: Required for world generation
+
+## Building
+
+Since this is a data-driven mod with no Java code, building is simple:
+
+```bash
+./gradlew build
+```
+
+The build will:
+- Process resources (including manifest.json)
+- Package everything into a JAR
+- No Java compilation needed!
 
 ## Installation
 
-Place the built JAR in the `mods/` folder at your server root. The mod uses a custom `IWorldGenProvider` that:
+1. Build WorldGenOverlayLib first:
+   ```bash
+   cd ../WorldGenOverlayLib
+   ./gradlew build publish
+   ```
 
-1. Copies the base worldgen configuration to a temporary directory
-2. Overlays coal ore node files from the mod JAR (Entry.node.json merges, CoalSpread/Column/Vein nodes)
-3. Delegates to the standard Hytale worldgen loader
+2. Build CoalMod:
+   ```bash
+   cd ../CoalMod
+   ./gradlew build
+   ```
 
-The mod registers itself as the "Hytale" worldgen provider, replacing the built-in one.
+3. Install both mods to your Hytale server
 
-## World Generation Details
+## Benefits of Data-Driven Approach
 
-- **Entry Distribution:** Coal is added to the ore distribution wheel in each zone's `Entry.node.json`
-- **Repeat:** Each coal variant (CoalSpread, CoalSpread1-5) has `Repeat: [110, 120]`
-- **Height Distribution:** CoalColumn uses `Length: [255, 10]` with `PitchSet: [0, 180]` on CoalSpread children to enable spawning from Y 10 to Y 255
-- **Vein Types:** 12 vein files per zone (CoalVeinSmall/Large × 6 variants) matching copper's structure
+- **No Java Knowledge Required**: Just edit JSON files
+- **Easy to Modify**: Change zones, add/remove node files by editing the config
+- **Easy to Share**: Distribute as a resource pack - no compilation needed
+- **Version Control Friendly**: JSON files are easy to diff and merge
+- **Quick Iteration**: Change config and rebuild - no code compilation
 
-## Library Abstraction
+## Customization
 
-`WorldGenOverlayHelper` and `ModOresWorldGenProvider` are structured so they can be extracted into a library mod later. The overlay resource paths and merge-entry prefixes (e.g. `Ores.Coal.`) can be supplied by a builder or config instead of hardcoding.
+To customize CoalMod:
 
+1. **Add/Remove Zones**: Edit `overlays.json` and modify the `Zones` array
+2. **Change Node Files**: Edit the `NodeFiles` array in `overlays.json`
+3. **Modify Ore Distribution**: Edit the `Entry.node.json` files in each zone
+4. **Adjust Ore Generation**: Edit the individual node files (CoalSpread, CoalColumn, etc.)
+
+## Example: Adding a New Zone
+
+Simply add the zone name to the `Zones` array in `overlays.json`:
+
+```json
+"Zones": [
+  "Zone1_Tier1",
+  "Zone1_Tier2",
+  "NewZoneName"  // Add this
+]
+```
+
+Make sure you have the corresponding `Entry.node.json` and node files in:
+```
+Server/World/Default/Zones/NewZoneName/Cave/Ores/
+```
+
+## License
+
+Same as WorldGenOverlayLib project.

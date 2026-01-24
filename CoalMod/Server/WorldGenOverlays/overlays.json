@@ -1,0 +1,16 @@
+{
+  "Overlays": [
+    {
+      "Name": "Coal Ore Overlay",
+      "Generator": "Default",
+      "Ores": ["Coal"],
+      "Zones": [
+        "Zone0",
+        "Zone1",
+        "Zone2",
+        "Zone3",
+        "Zone4"
+      ]
+    }
+  ]
+}
